@@ -1,0 +1,85 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>My boss rocks</title>
+    <link href="https://unpkg.com/tailwindcss@^1.0/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="/style.css">
+</head>
+<body class="relative">
+
+<div style="
+    width: 24vw;
+    max-width: 140px;
+    margin: 2rem;
+">
+    <img src="/images/mybossrocks.png" alt="Our boss rocks">
+</div>
+
+<!-- pedals -->
+<div class="flex justify-center relative" style="transform: rotate(-25deg);">
+    <span class="pedal" data-pedal data-pedal-key="65"><img src="/images/pedals/femke.png" alt="Femme" /></span>
+    <span class="pedal" data-pedal data-pedal-key="83"><img src="/images/pedals/caveman.png" alt="Cavens" /></span>
+    <span class="pedal" data-pedal data-pedal-key="68"><img src="/images/pedals/sarah.png" alt="Saraaah" /></span>
+    <span class="pedal" data-pedal data-pedal-key="70"><img src="/images/pedals/caro.png" alt="Caro" /></span>
+    <span class="pedal" data-pedal data-pedal-key="71"><img src="/images/pedals/tijs.png" alt="Titser" /></span>
+
+</div>
+<div class="flex justify-end relative mt-8" style="transform: rotate(-19deg);">
+    <span class="pedal" data-pedal data-pedal-key="72"><img src="/images/pedals/marlo.png" alt="Verboven" /></span>
+    <span class="pedal" data-pedal data-pedal-key="74"><img src="/images/pedals/steffanie.png" alt="Steffie" /></span>
+    <span class="pedal" data-pedal data-pedal-key="75"><img src="/images/pedals/johnny.png" alt="King" /></span>
+    <span class="pedal" data-pedal data-pedal-key="76"><img src="/images/pedals/sofie.png" alt="Soof" /></span>
+</div>
+
+<div class="flex justify-center my-20">
+<div class="" style="width: 40vw; max-width:400px;">
+    <img src="images/marshall.png" alt="This is not your regular amplifier">
+</div>
+</div>
+
+
+<audio data-audio-key="65" src="audio/mybossrocks.m4a"></audio>
+<audio data-audio-key="83" src="audio/mybossrocks.m4a"></audio>
+<audio data-audio-key="68" src="audio/mybossrocks.m4a"></audio>
+<audio data-audio-key="70" src="audio/mybossrocks.m4a"></audio>
+<audio data-audio-key="71" src="audio/mybossrocks.m4a"></audio>
+<audio data-audio-key="72" src="audio/mybossrocks.m4a"></audio>
+<audio data-audio-key="74" src="audio/mybossrocks.m4a"></audio>
+<audio data-audio-key="75" src="audio/mybossrocks.m4a"></audio>
+<audio data-audio-key="76" src="audio/mybossrocks.m4a"></audio>
+
+<script>
+
+    function playSound(e)
+    {
+        var audio = document.querySelector(`audio[data-audio-key="${e.keyCode}"]`);
+        if(null == audio) return;
+
+        audio.currentTime = 0;
+        audio.play();
+
+        var trigger = document.querySelector(`[data-pedal-key="${e.keyCode}"]`);
+        trigger.classList.add('playing');
+
+    }
+
+    function removeTransition(e)
+    {
+        if('transform' !== e.propertyName) return;
+
+        this.classList.remove('playing');
+
+    }
+
+    const keys = document.querySelectorAll('[data-pedal-key]');
+    keys.forEach(key => key.addEventListener('transitionend',removeTransition));
+
+    window.addEventListener('keydown',playSound);
+
+</script>
+
+
+</body>
+</html>
