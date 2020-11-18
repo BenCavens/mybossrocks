@@ -6,6 +6,7 @@
     <title>My boss rocks</title>
     <link href="https://unpkg.com/tailwindcss@^1.0/dist/tailwind.min.css" rel="stylesheet">
     <link rel="stylesheet" href="/style.css">
+    <script async src="pizzicato.js"></script>
 </head>
 <body class="relative">
 
@@ -19,7 +20,7 @@
 
 <!-- pedals -->
 <div class="flex justify-center relative" style="transform: rotate(-25deg);">
-    <span class="pedal" data-pedal data-pedal-key="65"><img src="/images/pedals/femke.png" alt="Femme" /></span>
+    <span class="pedal" data-pedal data-pedal-key="81"><img src="/images/pedals/femke.png" alt="Femme" /></span>
     <span class="pedal" data-pedal data-pedal-key="83"><img src="/images/pedals/caveman.png" alt="Cavens" /></span>
     <span class="pedal" data-pedal data-pedal-key="68"><img src="/images/pedals/sarah.png" alt="Saraaah" /></span>
     <span class="pedal" data-pedal data-pedal-key="70"><img src="/images/pedals/caro.png" alt="Caro" /></span>
@@ -40,7 +41,7 @@
 </div>
 
 
-<audio data-audio-key="65" src="audio/mybossrocks.m4a"></audio>
+<audio data-audio-key="81" src="audio/mybossrocks.m4a"></audio>
 <audio data-audio-key="83" src="audio/mybossrocks.m4a"></audio>
 <audio data-audio-key="68" src="audio/mybossrocks.m4a"></audio>
 <audio data-audio-key="70" src="audio/mybossrocks.m4a"></audio>
@@ -52,27 +53,111 @@
 
 <script>
 
+    const audioFiles = document.querySelectorAll('audio');
+    let audioTracks = {};
+
+    const effects = {
+        81: 'distortion',
+        83: 'delay',
+        68: 'pingpong',
+        70: 'flanger',
+        71: 'tremolo',
+        72: 'fuzz',
+        74: 'reverb',
+        75: 'reverb',
+        76: 'reverb',
+    };
+
+    audioFiles.forEach(el => {
+        const index = el.getAttribute('data-audio-key');
+        audioTracks[index] = new Pizzicato.Sound(el.getAttribute('src'), function() {
+            addEffect(audioTracks[index], effects[index]);
+        });
+    });
+
     function playSound(e)
     {
-        var audio = document.querySelector(`audio[data-audio-key="${e.keyCode}"]`);
+        // In case of keypress or click...
+        const index = e.keyCode
+
+        var audio = audioTracks[index];
+
         if(null == audio) return;
 
-        audio.currentTime = 0;
+        audio.stop();
         audio.play();
 
-        var trigger = document.querySelector(`[data-pedal-key="${e.keyCode}"]`);
+        var trigger = document.querySelector(`[data-pedal-key="${index}"]`);
         trigger.classList.add('playing');
-
     }
 
-    function removeTransition(e)
-    {
+    function removeTransition(e) {
         if('transform' !== e.propertyName) return;
-
         this.classList.remove('playing');
-
     }
 
+    function addEffect(audio, type)
+    {
+        let effect;
+
+        switch (type) {
+            case 'distortion':
+                effect = new Pizzicato.Effects.Distortion({
+                    gain: 0.4
+                });
+            break;
+            case 'delay':
+                effect = new Pizzicato.Effects.Delay({
+                    feedback: 0.6,
+                    time: 0.22,
+                    mix: 0.75
+                });
+            break;
+            case 'reverb':
+                effect = new Pizzicato.Effects.Reverb({
+                    time: 1,
+                    decay: 0.8,
+                    reverse: false,
+                    mix: 0.5
+                });
+            break;
+            case 'pingpong':
+                effect = new Pizzicato.Effects.PingPongDelay({
+                    feedback: 0.3,
+                    time: 0.2,
+                    mix: 0.68
+                });
+            break;
+            case 'fuzz':
+                effect = new Pizzicato.Effects.Quadrafuzz({
+                    lowGain: 0.6,
+                    midLowGain: 0.8,
+                    midHighGain: 0.5,
+                    highGain: 0.9,
+                });
+            break;
+            case 'flanger':
+                effect = new Pizzicato.Effects.Flanger({
+                    time: 0.45,
+                    speed: 0.2,
+                    depth: 0.5,
+                    feedback: 0.3,
+                    mix: 0.5
+                });
+            break;
+            case 'tremolo':
+                effect = new Pizzicato.Effects.Tremolo({
+                    speed: 20,
+                    depth: 1,
+                    mix: 0.8
+                });
+            break;
+        }
+
+        if(effect) audio.addEffect(effect);
+    }
+
+    // Event listeners
     const keys = document.querySelectorAll('[data-pedal-key]');
     keys.forEach(key => key.addEventListener('transitionend',removeTransition));
 
