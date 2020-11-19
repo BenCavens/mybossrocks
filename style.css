@@ -48,3 +48,12 @@ kbd {
   background-image:url(images/paper.png);
   font-family: 'Architects Daughter', cursive;
 }
+
+.font-hand{
+  font-family: 'Architects Daughter', cursive;
+}
+
+.ghost{
+  opacity: 0;
+  transition: all ease-in-out 0.3s;
+}
