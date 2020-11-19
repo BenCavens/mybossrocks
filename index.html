@@ -51,12 +51,55 @@
     <span class="pedal" data-pedal="" data-pedal-key="76"><img src="/images/pedals/steffanie.png" alt="Steffie"></span>
 </div>
 
-<div class="flex justify-center pb-10">
+<div class="flex justify-center">
     <div class="" style="width: 40vw; max-width:400px;">
         <img src="images/marshall.png" alt="This is not your regular amplifier">
     </div>
 </div>
 
+<div class="flex justify-center space-x-12 -mt-8">
+    <label class="relative h-64 w-6 flex justify-center items-stretch effect-label" for="effect-distortion">
+        <input type="checkbox" name="effect" id="effect-distortion" value="distortion" hidden>
+        <div class="w-4 bg-black"></div>
+        <img class="absolute bottom-0" src="images/mixer_button.png" alt="">
+    </label>
+
+    <label class="relative h-64 w-6 flex justify-center items-stretch rounded cursor-pointer effect-label" for="effect-delay">
+        <input type="checkbox" name="effect" id="effect-delay" value="delay" hidden>
+        <div class="w-4 bg-black"></div>
+        <img class="absolute bottom-0" src="images/mixer_button.png" alt="">
+    </label>
+
+    <label class="relative h-64 w-6 flex justify-center items-stretch rounded cursor-pointer effect-label" for="effect-pingpong">
+        <input type="checkbox" name="effect" id="effect-pingpong" value="pingpong" hidden>
+        <div class="w-4 bg-black"></div>
+        <img class="absolute bottom-0" src="images/mixer_button.png" alt="">
+    </label>
+
+    <label class="relative h-64 w-6 flex justify-center items-stretch rounded cursor-pointer effect-label" for="effect-flanger">
+        <input type="checkbox" name="effect" id="effect-flanger" value="flanger" hidden>
+        <div class="w-4 bg-black"></div>
+        <img class="absolute bottom-0" src="images/mixer_button.png" alt="">
+    </label>
+
+    <label class="relative h-64 w-6 flex justify-center items-stretch rounded cursor-pointer effect-label" for="effect-tremolo">
+        <input type="checkbox" name="effect" id="effect-tremolo" value="tremolo" hidden>
+        <div class="w-4 bg-black"></div>
+        <img class="absolute bottom-0" src="images/mixer_button.png" alt="">
+    </label>
+
+    <label class="relative h-64 w-6 flex justify-center items-stretch rounded cursor-pointer effect-label" for="effect-fuzz">
+        <input type="checkbox" name="effect" id="effect-fuzz" value="fuzz" hidden>
+        <div class="w-4 bg-black"></div>
+        <img class="absolute bottom-0" src="images/mixer_button.png" alt="">
+    </label>
+
+    <label class="relative h-64 w-6 flex justify-center items-stretch rounded cursor-pointer effect-label" for="effect-reverb">
+        <input type="checkbox" name="effect" id="effect-reverb" value="reverb" hidden>
+        <div class="w-4 bg-black"></div>
+        <img class="absolute bottom-0" src="images/mixer_button.png" alt="">
+    </label>
+</div>
 
 <audio data-audio-key="81" src="audio/ik-fix-da.m4a"></audio>
 <audio data-audio-key="83" src="audio/mybossrocks.m4a"></audio>
@@ -72,24 +115,53 @@
     const audioFiles = document.querySelectorAll('audio');
     let audioTracks = {};
 
-    const effects = {
-        81: 'distortion',
-        83: 'delay',
-        68: 'pingpong',
-        70: 'flanger',
-        71: 'tremolo',
-        72: 'fuzz',
-        74: 'reverb',
-        75: 'reverb',
-        76: 'reverb',
-    };
+    const effectInputs = document.querySelectorAll('input[name="effect"]');
 
     audioFiles.forEach(el => {
         const index = el.getAttribute('data-audio-key');
-        audioTracks[index] = new Pizzicato.Sound(el.getAttribute('src'), function() {
-            addEffect(audioTracks[index], effects[index]);
-        });
+        audioTracks[index] = new Pizzicato.Sound(el.getAttribute('src'));
     });
+
+    addEffects();
+
+    effectInputs.forEach(effectInput => {
+        effectInput.addEventListener('change', addEffects);
+    })
+
+    function addEffects() {
+        for(index in audioTracks) {
+            let audioTrack = audioTracks[index];
+
+            // Remove all effects from track
+            audioTrack.effects.forEach(effect => {
+                audioTrack.removeEffect(effect);
+            });
+            // Visually turn off all mixer buttons
+            effectInputs.forEach(input => {
+                input.parentElement.classList.remove('active');
+            });
+
+            // Add all effects to track
+            let effects = getEffectNames();
+            effects.forEach(effect => {
+                addEffect(audioTrack, effect);
+            });
+            // Visually turn on all mixer buttons
+            effectInputs.forEach(input => {
+                if(input.checked) input.parentElement.classList.add('active');
+            });
+        };
+    }
+
+    function getEffectNames() {
+        let effectNames = [];
+
+        effectInputs.forEach(input => {
+            if(input.checked) effectNames.push(input.value);
+        });
+
+        return effectNames;
+    }
 
     function playSound(e)
     {

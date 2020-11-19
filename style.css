@@ -29,3 +29,12 @@ kbd {
   display: block;
   font-size: 4rem;
 }
+
+.effect-label img {
+    transition: all .3s ease;
+    transform: translateY(0);
+}
+
+.effect-label.active img {
+    transform: translateY(-13rem);
+}
