@@ -112,144 +112,164 @@
 <audio data-audio-key="76" src="audio/mybossrocks.m4a"></audio>
 
 <script>
-    const audioFiles = document.querySelectorAll('audio');
-    let audioTracks = {};
 
-    const effectInputs = document.querySelectorAll('input[name="effect"]');
 
-    audioFiles.forEach(el => {
-        const index = el.getAttribute('data-audio-key');
-        audioTracks[index] = new Pizzicato.Sound(el.getAttribute('src'));
-    });
+    window.addEventListener('DOMContentLoaded', function(){
 
-    addEffects();
+        const audioFiles = document.querySelectorAll('audio');
+        const effectInputs = document.querySelectorAll('input[name="effect"]');
 
-    effectInputs.forEach(effectInput => {
-        effectInput.addEventListener('change', addEffects);
-    })
-
-    function addEffects() {
-        for(index in audioTracks) {
-            let audioTrack = audioTracks[index];
-
-            // Remove all effects from track
-            audioTrack.effects.forEach(effect => {
-                audioTrack.removeEffect(effect);
-            });
-            // Visually turn off all mixer buttons
-            effectInputs.forEach(input => {
-                input.parentElement.classList.remove('active');
-            });
-
-            // Add all effects to track
-            let effects = getEffectNames();
-            effects.forEach(effect => {
-                addEffect(audioTrack, effect);
-            });
-            // Visually turn on all mixer buttons
-            effectInputs.forEach(input => {
-                if(input.checked) input.parentElement.classList.add('active');
-            });
+        let audioTracks = {};
+        let audioGroup;
+        const availableEffects = {
+            distortion: new Pizzicato.Effects.Distortion({
+                gain: 0.4
+            }),
+            delay: new Pizzicato.Effects.Delay({
+                feedback: 0.6,
+                time: 0.22,
+                mix: 0.75
+            }),
+            reverb: new Pizzicato.Effects.Reverb({
+                time: 1,
+                decay: 0.8,
+                reverse: false,
+                mix: 0.5
+            }),
+            pingpong: new Pizzicato.Effects.PingPongDelay({
+                feedback: 0.3,
+                time: 0.2,
+                mix: 0.68
+            }),
+            fuzz: new Pizzicato.Effects.Quadrafuzz({
+                lowGain: 0.6,
+                midLowGain: 0.8,
+                midHighGain: 0.5,
+                highGain: 0.9,
+            }),
+            flanger: new Pizzicato.Effects.Flanger({
+                time: 0.45,
+                speed: 0.2,
+                depth: 0.5,
+                feedback: 0.3,
+                mix: 0.5
+            }),
+            tremolo: new Pizzicato.Effects.Tremolo({
+                speed: 20,
+                depth: 1,
+                mix: 0.8
+            }),
         };
-    }
 
-    function getEffectNames() {
-        let effectNames = [];
-
-        effectInputs.forEach(input => {
-            if(input.checked) effectNames.push(input.value);
+        // Load files as audio tracks
+        audioFiles.forEach(el => {
+            const index = el.getAttribute('data-audio-key');
+            audioTracks[index] = new Pizzicato.Sound(el.getAttribute('src'));
         });
 
-        return effectNames;
-    }
+        // Group tracks together so we can add and remove effects easily
+        audioGroup = new Pizzicato.Group(Object.values(audioTracks));
 
-    function playSound(e)
-    {
-        // In case of keypress or click...
-        const index = e.keyCode
+        function toggleEffect(e) {
 
-        var audio = audioTracks[index];
+            const activateEffect = e.target.checked;
 
-        if(null == audio) return;
+            // TODO: fetch connected effect name
+            // fetch effect class (change switch statement with effectCatalog)
+            // remove or add this effect class
+            const effectKey = e.target.value;
 
-        audio.stop();
-        audio.play();
+            // Add effect
+            if(activateEffect) {
+                console.log('adding ' + effectKey)
 
-        var trigger = document.querySelector(`[data-pedal-key="${index}"]`);
-        trigger.classList.add('playing');
-    }
+                audioGroup.addEffect(availableEffects[effectKey]);
+                e.target.parentElement.classList.add('active')
+                return;
+            }
 
-    function removeTransition(e) {
-        if('transform' !== e.propertyName) return;
-        this.classList.remove('playing');
-    }
+            // Remove effect
+            console.log('removing ' + effectKey)
 
-    function addEffect(audio, type)
-    {
-        let effect;
+            audioGroup.removeEffect(availableEffects[effectKey]);
+            e.target.parentElement.classList.remove('active')
+        }
 
-        switch (type) {
-            case 'distortion':
-                effect = new Pizzicato.Effects.Distortion({
+        function playSound(e)
+        {
+            // In case of keypress or click...
+            const index = e.keyCode
+
+            var audio = audioTracks[index];
+
+            if(null == audio) return;
+
+            audio.stop();
+            audio.play();
+
+            var trigger = document.querySelector(`[data-pedal-key="${index}"]`);
+            trigger.classList.add('playing');
+        }
+
+        function removeTransition(e) {
+            if('transform' !== e.propertyName) return;
+            this.classList.remove('playing');
+        }
+
+        function addEffect(audio, type)
+        {
+            const availableEffects = {
+                distortion: new Pizzicato.Effects.Distortion({
                     gain: 0.4
-                });
-            break;
-            case 'delay':
-                effect = new Pizzicato.Effects.Delay({
+                }),
+                delay: new Pizzicato.Effects.Delay({
                     feedback: 0.6,
                     time: 0.22,
                     mix: 0.75
-                });
-            break;
-            case 'reverb':
-                effect = new Pizzicato.Effects.Reverb({
+                }),
+                reverb: new Pizzicato.Effects.Reverb({
                     time: 1,
                     decay: 0.8,
                     reverse: false,
                     mix: 0.5
-                });
-            break;
-            case 'pingpong':
-                effect = new Pizzicato.Effects.PingPongDelay({
+                }),
+                pingpong: new Pizzicato.Effects.PingPongDelay({
                     feedback: 0.3,
                     time: 0.2,
                     mix: 0.68
-                });
-            break;
-            case 'fuzz':
-                effect = new Pizzicato.Effects.Quadrafuzz({
+                }),
+                fuzz: new Pizzicato.Effects.Quadrafuzz({
                     lowGain: 0.6,
                     midLowGain: 0.8,
                     midHighGain: 0.5,
                     highGain: 0.9,
-                });
-            break;
-            case 'flanger':
-                effect = new Pizzicato.Effects.Flanger({
+                }),
+                flanger: new Pizzicato.Effects.Flanger({
                     time: 0.45,
                     speed: 0.2,
                     depth: 0.5,
                     feedback: 0.3,
                     mix: 0.5
-                });
-            break;
-            case 'tremolo':
-                effect = new Pizzicato.Effects.Tremolo({
+                }),
+                tremolo: new Pizzicato.Effects.Tremolo({
                     speed: 20,
                     depth: 1,
                     mix: 0.8
-                });
-            break;
+                }),
+            };
         }
 
-        if(effect) audio.addEffect(effect);
-    }
+        // Event listeners
+        const keys = document.querySelectorAll('[data-pedal-key]');
+        keys.forEach(key => key.addEventListener('transitionend',removeTransition));
 
-    // Event listeners
-    const keys = document.querySelectorAll('[data-pedal-key]');
-    keys.forEach(key => key.addEventListener('transitionend',removeTransition));
+        window.addEventListener('keydown',playSound);
 
-    window.addEventListener('keydown',playSound);
+        effectInputs.forEach(effectInput => {
+            effectInput.addEventListener('change', toggleEffect);
+        })
+    });
+
 
 </script>
 
