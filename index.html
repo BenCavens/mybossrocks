@@ -12,26 +12,46 @@
     <link rel="icon" type="image/png" href="images/favicon.png">
 
     <meta name="title" content="My boss rocks 🤘 A tribute.">
-    <meta name="description" content="Het is vandaag Dag van de Ondernemer. Wij bieden ons eerbetoon aan Kevin Heylen, onze rockstar baas">
+    <meta name="description" content="Wij zijn trots op onze chief, want als een ware rockster geeft hij steeds het beste van zichzelf. Weet je wat zijn favoriete shout-outs zijn?">
 
-  <!-- Open Graph / Facebook -->
-  <meta property="og:type" content="website">
-  <meta property="og:url" content="https://mybossrocks.be/">
-  <meta property="og:title" content="My boss rocks 🤘 A tribute.">
-  <meta property="og:description" content="Het is vandaag Dag van de Ondernemer. Wij bieden ons eerbetoon aan Kevin Heylen, onze rockstar baas">
-  <meta property="og:image" content="https://mybossrocks.be/images/share.png">
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://mybossrocks.be/">
+    <meta property="og:title" content="My boss rocks 🤘 A tribute.">
+    <meta property="og:description" content="Wij zijn trots op onze chief, want als een ware rockster geeft hij steeds het beste van zichzelf. Weet je wat zijn favoriete shout-outs zijn?">
+    <meta property="og:image" content="https://mybossrocks.be/images/share.png">
 
-  <!-- Twitter -->
-  <meta property="twitter:card" content="summary_large_image">
-  <meta property="twitter:url" content="https://mybossrocks.be/">
-  <meta property="twitter:title" content="My boss rocks 🤘 A tribute.">
-  <meta property="twitter:description" content="Het is vandaag Dag van de Ondernemer. Wij bieden ons eerbetoon aan Kevin Heylen, onze rockstar baas">
-  <meta property="twitter:image" content="https://mybossrocks.be/images/share.png">
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://mybossrocks.be/">
+    <meta property="twitter:title" content="My boss rocks 🤘 A tribute.">
+    <meta property="twitter:description" content="Wij zijn trots op onze chief, want als een ware rockster geeft hij steeds het beste van zichzelf. Weet je wat zijn favoriete shout-outs zijn?">
+    <meta property="twitter:image" content="https://mybossrocks.be/images/share.png">
+
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Architects+Daughter&display=swap" rel="stylesheet">
 
 </head>
-<body class="relative">
-
-<div class="w-1/6 p-10 absolute bottom-0 z-50">
+<body>
+<div class="relative min-h-screen">
+<!-- MODAL -->
+<div class="note fixed z-50 w-screen h-screen ">
+    <div class="bg-white w-2/5 h-64 z-20 inset-0 mx-auto my-auto absolute shadow rounded-lg overflow-hidden">
+        <div class="flex h-full">
+            <div class="w-1/3 h-auto bg-cover bg-center" style="background-image:url('https://thinktomorrow.be/media/741/conversions/kevin-2-large.png')">
+                <img src="https://thinktomorrow.be/media/741/conversions/kevin-2-large.png" class="hidden">
+            </div>
+            <div class="w-2/3 space-y-4 p-8">
+                <h1 class="font-bold text-3xl">#DagVanDeOndernemer.</h1>
+                <p class="font-light">Wij zijn trots op onze <span class="font-bold"></span>chief</span>, want als een ware rockster geeft hij steeds het beste van zichzelf. Weet je wat zijn favoriete <span class="font-bold">shout-outs</span> zijn?</p>
+                <span class="cursor-pointer toggle-me inline-flex justify-center items-end rounded-md border border-transparent shadow-sm px-6 py-2 bg-black text-base font-medium text-white hover:bg-red-900">Let's find out 🎸</span>
+            </div>
+        </div>
+    </div>
+    <div class="backdrop bg-black w-full h-full absolute z-10 inset-0 opacity-75"></div>
+</div>
+<!-- Logo -->
+<div class="w-1/6 p-10 absolute bottom-0 z-40">
     <img src="/images/mybossrocks.png" alt="Our boss rocks">
 </div>
 
@@ -51,54 +71,73 @@
     <span class="pedal" data-pedal="" data-pedal-key="76"><img src="/images/pedals/steffanie.png" alt="Steffie"></span>
 </div>
 
+<!-- Marshall -->
 <div class="flex justify-center">
     <div class="" style="width: 40vw; max-width:400px;">
         <img src="images/marshall.png" alt="This is not your regular amplifier">
     </div>
 </div>
+</div>
+<!-- Mixer Panel -->
+<div class="flex justify-center space-x-12 carbon p-10 z-50 rounded w-auto border-t-4 border-black shadow-inner">
+    <div class="flex flex-col items-center">
+        <label class="relative h-24 w-6 flex justify-center items-stretch effect-label" for="effect-distortion">
+            <span class="w-2 h-2 bg-primary-500"></span>
+            <input type="checkbox" name="effect" id="effect-distortion" value="distortion" hidden>
+            <div class="w-4 bg-black rounded-full"></div>
+            <img class="absolute bottom-0 cursor-pointer" src="images/sliders/mixer_button-white.png" alt="">
+        </label>
+        <span class="paper bg-contain bg-center p-4 bg-no-repeat">distort</span>
+    </div>
+    <div class="flex flex-col items-center">
+        <label class="relative h-24 w-6 flex justify-center items-stretch rounded cursor-pointer effect-label" for="effect-delay">
+            <input type="checkbox" name="effect" id="effect-delay" value="delay" hidden>
+            <div class="w-4 bg-black rounded-full"></div>
+            <img class="absolute bottom-0 cursor-pointer" src="images/sliders/mixer_button.png" alt="">
+        </label>
+        <span class="paper bg-contain bg-center p-4 bg-no-repeat">delay</span>
+    </div>
 
-<div class="flex justify-center space-x-12 -mt-8">
-    <label class="relative h-64 w-6 flex justify-center items-stretch effect-label" for="effect-distortion">
-        <input type="checkbox" name="effect" id="effect-distortion" value="distortion" hidden>
-        <div class="w-4 bg-black"></div>
-        <img class="absolute bottom-0" src="images/mixer_button.png" alt="">
-    </label>
-
-    <label class="relative h-64 w-6 flex justify-center items-stretch rounded cursor-pointer effect-label" for="effect-delay">
-        <input type="checkbox" name="effect" id="effect-delay" value="delay" hidden>
-        <div class="w-4 bg-black"></div>
-        <img class="absolute bottom-0" src="images/mixer_button.png" alt="">
-    </label>
-
-    <label class="relative h-64 w-6 flex justify-center items-stretch rounded cursor-pointer effect-label" for="effect-pingpong">
-        <input type="checkbox" name="effect" id="effect-pingpong" value="pingpong" hidden>
-        <div class="w-4 bg-black"></div>
-        <img class="absolute bottom-0" src="images/mixer_button.png" alt="">
-    </label>
-
-    <label class="relative h-64 w-6 flex justify-center items-stretch rounded cursor-pointer effect-label" for="effect-flanger">
-        <input type="checkbox" name="effect" id="effect-flanger" value="flanger" hidden>
-        <div class="w-4 bg-black"></div>
-        <img class="absolute bottom-0" src="images/mixer_button.png" alt="">
-    </label>
-
-    <label class="relative h-64 w-6 flex justify-center items-stretch rounded cursor-pointer effect-label" for="effect-tremolo">
-        <input type="checkbox" name="effect" id="effect-tremolo" value="tremolo" hidden>
-        <div class="w-4 bg-black"></div>
-        <img class="absolute bottom-0" src="images/mixer_button.png" alt="">
-    </label>
-
-    <label class="relative h-64 w-6 flex justify-center items-stretch rounded cursor-pointer effect-label" for="effect-fuzz">
-        <input type="checkbox" name="effect" id="effect-fuzz" value="fuzz" hidden>
-        <div class="w-4 bg-black"></div>
-        <img class="absolute bottom-0" src="images/mixer_button.png" alt="">
-    </label>
-
-    <label class="relative h-64 w-6 flex justify-center items-stretch rounded cursor-pointer effect-label" for="effect-reverb">
-        <input type="checkbox" name="effect" id="effect-reverb" value="reverb" hidden>
-        <div class="w-4 bg-black"></div>
-        <img class="absolute bottom-0" src="images/mixer_button.png" alt="">
-    </label>
+    <div class="flex flex-col items-center">
+        <label class="relative h-24 w-6 flex justify-center items-stretch rounded cursor-pointer effect-label" for="effect-pingpong">
+            <input type="checkbox" name="effect" id="effect-pingpong" value="pingpong" hidden>
+            <div class="w-4 bg-black rounded-full"></div>
+            <img class="absolute bottom-0 cursor-pointer" src="images/sliders/mixer_button.png" alt="">
+        </label>
+        <span class="paper bg-contain bg-center p-4 bg-no-repeat">pingpong</span>
+    </div>
+    <div class="flex flex-col items-center">
+        <label class="relative h-24 w-6 flex justify-center items-stretch rounded cursor-pointer effect-label" for="effect-flanger">
+            <input type="checkbox" name="effect" id="effect-flanger" value="flanger" hidden>
+            <div class="w-4 bg-black rounded-full"></div>
+            <img class="absolute bottom-0 cursor-pointer" src="images/sliders/mixer_button.png" alt="">
+        </label>
+        <span class="paper bg-contain bg-center p-4 bg-no-repeat">flanger</span>
+    </div>
+    <div class="flex flex-col items-center">
+        <label class="relative h-24 w-6 flex justify-center items-stretch rounded cursor-pointer effect-label" for="effect-tremolo">
+            <input type="checkbox" name="effect" id="effect-tremolo" value="tremolo" hidden>
+            <div class="w-4 bg-black rounded-full"></div>
+            <img class="absolute bottom-0 cursor-pointer" src="images/sliders/mixer_button-red.png" alt="">
+        </label>
+        <span class="paper bg-contain bg-center p-4 bg-no-repeat">trem</span>
+    </div>
+    <div class="flex flex-col items-center">
+        <label class="relative h-24 w-6 flex justify-center items-stretch rounded cursor-pointer effect-label" for="effect-fuzz">
+            <input type="checkbox" name="effect" id="effect-fuzz" value="fuzz" hidden>
+            <div class="w-4 bg-black rounded-full"></div>
+            <img class="absolute bottom-0 cursor-pointer" src="images/sliders/mixer_button.png" alt="">
+        </label>
+        <span class="paper bg-contain bg-center p-4 bg-no-repeat">fuzz</span>
+    </div>
+    <div class="flex flex-col items-center">
+        <label class="relative h-24 w-6 flex justify-center items-stretch rounded cursor-pointer effect-label" for="effect-reverb">
+            <input type="checkbox" name="effect" id="effect-reverb" value="reverb" hidden>
+            <div class="w-4 bg-black rounded-full"></div>
+            <img class="absolute bottom-0 cursor-pointer" src="images/sliders/mixer_button.png" alt="">
+        </label>
+        <span class="paper bg-contain bg-center p-4 bg-no-repeat">reverb</span>
+    </div>    
 </div>
 
 <audio data-audio-key="81" src="audio/ik-fix-da.m4a"></audio>
@@ -271,8 +310,16 @@
     });
 
 
-</script>
 
+    var el = document.querySelector('.toggle-me');
+    var note = document.querySelector('.note');
+    el.onclick = function() {
+        note.classList.toggle('ghost');
+    }
+
+</script>
+<!-- Basic analytics -->
+<script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-5fb6e6818b9edf7f"></script> 
 
 </body>
 </html>
