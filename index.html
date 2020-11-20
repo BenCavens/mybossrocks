@@ -59,18 +59,18 @@
 
 <!-- pedals -->
 <div class="flex justify-center relative pt-10">
-    <span class="pedal" data-pedal data-pedal-key="81"><img src="/images/pedals/femke.png" alt="Femme" /></span>
-    <span class="pedal" data-pedal data-pedal-key="83"><img src="/images/pedals/caveman.png" alt="Cavens" /></span>
-    <span class="pedal" data-pedal data-pedal-key="68"><img src="/images/pedals/sarah.png" alt="Saraaah" /></span>
-    <span class="pedal" data-pedal data-pedal-key="70"><img src="/images/pedals/caro.png" alt="Caro" /></span>
-    <span class="pedal" data-pedal data-pedal-key="71"><img src="/images/pedals/tijs.png" alt="Titser" /></span>
+    <span class="pedal" data-pedal data-pedal-key="81"><img class="pointer-events-none" src="/images/pedals/femke.png" alt="Femme" /></span>
+    <span class="pedal" data-pedal data-pedal-key="83"><img class="pointer-events-none" src="/images/pedals/caveman.png" alt="Cavens" /></span>
+    <span class="pedal" data-pedal data-pedal-key="68"><img class="pointer-events-none" src="/images/pedals/sarah.png" alt="Saraaah" /></span>
+    <span class="pedal" data-pedal data-pedal-key="70"><img class="pointer-events-none" src="/images/pedals/caro.png" alt="Caro" /></span>
+    <span class="pedal" data-pedal data-pedal-key="71"><img class="pointer-events-none" src="/images/pedals/tijs.png" alt="Titser" /></span>
 </div>
 
 <div class="flex justify-center relative -mt-8">
-    <span class="pedal" data-pedal="" data-pedal-key="72"><img src="/images/pedals/marlo.png" alt="Verboven"></span>
-    <span class="pedal" data-pedal="" data-pedal-key="74"><img src="/images/pedals/johnny.png" alt="King"></span>
-    <span class="pedal" data-pedal="" data-pedal-key="75"><img src="/images/pedals/sofie.png" alt="Soof"></span>
-    <span class="pedal" data-pedal="" data-pedal-key="76"><img src="/images/pedals/steffanie.png" alt="Steffie"></span>
+    <span class="pedal" data-pedal="" data-pedal-key="72"><img class="pointer-events-none" src="/images/pedals/marlo.png" alt="Verboven"></span>
+    <span class="pedal" data-pedal="" data-pedal-key="74"><img class="pointer-events-none" src="/images/pedals/johnny.png" alt="King"></span>
+    <span class="pedal" data-pedal="" data-pedal-key="75"><img class="pointer-events-none" src="/images/pedals/sofie.png" alt="Soof"></span>
+    <span class="pedal" data-pedal="" data-pedal-key="76"><img class="pointer-events-none" src="/images/pedals/steffanie.png" alt="Steffie"></span>
 </div>
 
 <!-- Marshall -->
@@ -239,11 +239,8 @@
             e.target.parentElement.classList.remove('active')
         }
 
-        function playSound(e)
+        function playSound(index)
         {
-            // In case of keypress or click...
-            const index = e.keyCode
-
             var audio = audioTracks[index];
 
             if(null == audio) return;
@@ -343,9 +340,19 @@
 
         // Event listeners
         const keys = document.querySelectorAll('[data-pedal-key]');
-        keys.forEach(key => key.addEventListener('transitionend',removeTransition));
+        keys.forEach(key => key.addEventListener('transitionend', removeTransition));
 
-        window.addEventListener('keydown',playSound);
+        window.addEventListener('keydown', function(e) {
+            playSound(e.keyCode);
+        });
+
+        // On click events
+        keys.forEach(key => {
+            key.addEventListener('click', function(e) {
+                console.log(e.target);
+                playSound(e.target.getAttribute('data-pedal-key'));
+            });
+        });
 
         effectInputs.forEach(effectInput => {
             effectInput.addEventListener('change', toggleEffect);
@@ -364,7 +371,7 @@
 
 </script>
 <!-- Basic analytics -->
-<script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-5fb6e6818b9edf7f"></script> 
+<script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-5fb6e6818b9edf7f"></script>
 
 </body>
 </html>
