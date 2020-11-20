@@ -137,7 +137,15 @@
             <img class="absolute bottom-0 cursor-pointer" src="images/sliders/mixer_button.png" alt="">
         </label>
         <span class="paper bg-contain bg-center p-4 bg-no-repeat">reverb</span>
-    </div>    
+    </div>
+    <div class="flex flex-col items-center">
+        <label class="relative h-24 w-6 flex justify-center items-stretch rounded cursor-pointer effect-label" for="js-backing-track-toggle">
+            <input type="checkbox" id="js-backing-track-toggle" value="backingtrack" hidden>
+            <div class="w-4 bg-black rounded-full"></div>
+            <img class="absolute bottom-0 cursor-pointer" src="images/sliders/mixer_button.png" alt="">
+        </label>
+        <span class="paper bg-contain bg-center p-4 bg-no-repeat">Backing track</span>
+    </div>
 </div>
 
 <audio data-audio-key="81" src="audio/ik-fix-da.m4a"></audio>
@@ -148,7 +156,7 @@
 <audio data-audio-key="72" src="audio/marlo.m4a"></audio>
 <audio data-audio-key="74" src="audio/johnny.m4a"></audio>
 <audio data-audio-key="75" src="audio/Ik-ben-krokodillengroen.m4a"></audio>
-<audio data-audio-key="76" src="audio/mybossrocks.m4a"></audio>
+<audio data-audio-key="76" src="audio/steffanie.m4a"></audio>
 
 <script>
 
@@ -220,15 +228,10 @@
 
             // Add effect
             if(activateEffect) {
-                console.log('adding ' + effectKey)
-
                 audioGroup.addEffect(availableEffects[effectKey]);
                 e.target.parentElement.classList.add('active')
                 return;
             }
-
-            // Remove effect
-            console.log('removing ' + effectKey)
 
             audioGroup.removeEffect(availableEffects[effectKey]);
             e.target.parentElement.classList.remove('active')
@@ -298,6 +301,44 @@
             };
         }
 
+        var backingTrack;
+
+        function toggleBackingTrack(e) {
+
+            const activate = e.target.checked;
+
+            // Add effect
+            if(activate) {
+                backingTrack.play();
+                e.target.parentElement.classList.add('active')
+                return;
+            }
+
+            backingTrack.stop();
+            e.target.parentElement.classList.remove('active')
+        }
+
+        function initBackingTrack()
+        {
+            var drums = new Pizzicato.Sound({
+                source: 'file',
+                options: { path: './audio/backingtrack/drums-group.mp3', loop: true }
+            });
+            var guitar = new Pizzicato.Sound({
+                source: 'file',
+                options: { path: './audio/backingtrack/guitar-group.mp3', loop: true }
+            });
+            var bass = new Pizzicato.Sound({
+                source: 'file',
+                options: { path: './audio/backingtrack/bass-group.mp3', loop: true }
+            });
+
+            backingTrack = new Pizzicato.Group([drums, guitar, bass]);
+            // backingTrack.addEffect(availableEffects["reverb"]);
+        }
+
+        initBackingTrack();
+
         // Event listeners
         const keys = document.querySelectorAll('[data-pedal-key]');
         keys.forEach(key => key.addEventListener('transitionend',removeTransition));
@@ -307,6 +348,8 @@
         effectInputs.forEach(effectInput => {
             effectInput.addEventListener('change', toggleEffect);
         })
+
+        document.getElementById('js-backing-track-toggle').addEventListener('change', toggleBackingTrack);
     });
 
 
